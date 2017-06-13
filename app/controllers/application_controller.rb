@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_action :sync_db
+
   def index
     return redirect_to '/account' if session.key?(:frankiz_id)
   end
@@ -48,5 +50,18 @@ class ApplicationController < ActionController::Base
   def logout
     session.delete(:frankiz_id)
     redirect_to '/'
+  end
+
+  private
+
+  def sync_db
+    return unless Rails.env.production?
+    return if $last_sync && $last_sync > Time.current - 10.minutes
+    $last_sync = Time.current
+    Thread.new do
+      Rails.logger.info 'Starting DB sync'
+      database_path = SyncDb.fetch_database_from_gmail
+      SyncDb.replace_database(database_path)
+    end
   end
 end
