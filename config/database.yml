@@ -1,0 +1,25 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  username: bob
+  password: zde
+  host: localhost
+
+development:
+  <<: *default
+  database: tdb
+
+bob:
+  <<: *default
+  database: tdb
+
+test:
+  <<: *default
+  database: tdb_test
+
+production:
+  <<: *default
+  database: tdb
+  password: <%= ENV['MYSQL_PASSWORD'] %>
+  host: 92.222.86.35

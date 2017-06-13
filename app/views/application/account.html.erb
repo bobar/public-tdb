@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-md-5 col-md-push-7 text-center">
+    <h2>Bienvenue, <%= @account.first_name %></h2>
+    <h3>Ton solde est de <strong class="<%= 'text-danger' if @account.balance < 0 %>"><%= number_to_currency(@account.balance / 100.0) %></strong></h3>
+    <% if @account.balance < 0 %>
+      <h4>Viens donc nous faire un chèque !</h4>
+    <% end %>
+    <% if @account.total_clopes > 0 %>
+      <h3>Tu as dépensé <strong><%= number_to_currency(@account.total_clopes / 100.0) %></strong> en clopes.</h3>
+    <% end %>
+  </div>
+
+  <div class="col-md-7 col-md-pull-5">
+    <h3 class="text-center">Voici tes dernières transactions :</h3>
+
+    <table id="transactions-table" class="table table-condensed table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <td>Prix</td>
+          <td>Banque</td>
+          <td>Commentaire</td>
+          <td>Date</td>
+        </tr>
+      </thead>
+      <tbody id="transactions">
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
+            <td>
+              <% bank_trigramme = transaction.receiver.try(:trigramme) %>
+              <% if bank_trigramme != Account::DEFAULT_BANK_TRIGRAMME && transaction.id2 != transaction.id %>
+                <%= bank_trigramme.nil? ? transaction.id2 : bank_trigramme %>
+              <% end %>
+            </td>
+            <td><%= transaction.comment %></td>
+             <td>
+              <time
+                <% if transaction.date.to_date == Date.today %>
+                  class="timeago"
+                <% end %>
+                datetime="<%= transaction.date %>">
+                <%= transaction.date.strftime('%F %T') %>
+              </time>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
