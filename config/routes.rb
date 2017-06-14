@@ -7,5 +7,6 @@ Rails.application.routes.draw do
     get '/fkz_logged' => :fkz_logged
     get '/logout' => :logout
     get '/unknown' => :unknown
+    post '/issue' => :issue
   end
 end

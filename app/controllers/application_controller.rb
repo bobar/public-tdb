@@ -47,6 +47,13 @@ class ApplicationController < ActionController::Base
     redirect_to '/'
   end
 
+  def issue
+    client = Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'])
+    body = params[:body]
+    body += "\nFrankiz_id: #{session[:frankiz_id]}\n"
+    client.create_issue('bobar/public-tdb', 'New issue', body)
+  end
+
   def logout
     session.delete(:frankiz_id)
     redirect_to '/'
