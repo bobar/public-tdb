@@ -14,7 +14,9 @@ class SyncDb
   def self.replace_database(path)
     return unless Rails.env.production?
     conf = Rails.configuration.database_configuration[Rails.env]
-    ActiveRecord::Base.connection.execute(`gzip -dc #{path}`)
+    `gzip -dc #{path}`.split(";\n").each do |line|
+      ActiveRecord::Base.connection.execute(line)
+    end
     Rails.logger.info 'DB synchronized'
     File.delete path
   end
