@@ -18,4 +18,16 @@
 
 $(document).ready(function() {
   jQuery('time.timeago').timeago();
+
+  var slogans = $('span[id^="slogan-"]').hide();
+  var i = 0;
+
+  (function cycle() {
+      slogans.eq(i).fadeIn(400)
+                .delay(2000)
+                .fadeOut(400, cycle);
+
+      i = ++i % slogans.length;
+  })();
 });
+
