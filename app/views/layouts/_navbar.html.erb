@@ -22,10 +22,10 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Signaler un bug<span class="caret"></span>
           </a>
-          <ul class="dropdown-menu" style="min-width: 450px;">
+          <ul class="dropdown-menu" style="min-width: 320px;">
             <div class="col-md-12">
               <br>
-              <p>Merci d'expliquer le problème le plus clairement possible, et laisser votre nom / prénom pour espérer une réponse.</p>
+              <p>Merci d'expliquer le problème le plus clairement possible, et laisser votre nom / email pour avoir une réponse.</p>
               <%= bootstrap_form_tag(url: "/issue", method: :post) do |f| %>
                 <%= f.text_area(:body, hide_label: true, rows: 4) %>
                 <%= f.primary 'Envoyer' %>
