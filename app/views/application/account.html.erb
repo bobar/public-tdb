@@ -11,40 +11,44 @@
   </div>
 
   <div class="col-md-7 col-md-pull-5">
-    <h3 class="text-center">Voici tes transactions des 7 derniers jours&nbsp;:</h3>
+    <% if @transactions.empty? %>
+      <h3 class="text-center">Aucune conso sur les 7 derniers jours, passe prendre une bière&nbsp;!</h3>
+    <% else %>
+      <h3 class="text-center">Voici tes transactions des 7 derniers jours&nbsp;:</h3>
 
-    <table id="transactions-table" class="table table-condensed table-bordered table-striped table-hover">
-      <thead>
-        <tr>
-          <td>Prix</td>
-          <td>Bénéficiaire</td>
-          <td>Commentaire</td>
-          <td>Date</td>
-        </tr>
-      </thead>
-      <tbody id="transactions">
-        <% @transactions.each do |transaction| %>
+      <table id="transactions-table" class="table table-condensed table-bordered table-striped table-hover">
+        <thead>
           <tr>
-            <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
-            <td>
-              <% bank_trigramme = transaction.receiver.try(:trigramme) %>
-              <% if transaction.id2 != transaction.id %>
-                <%= bank_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : transaction.receiver.try(:full_name) %>
-              <% end %>
-            </td>
-            <td><%= transaction.comment %></td>
-             <td>
-              <time
-                <% if transaction.date.to_date == Date.today %>
-                  class="timeago"
-                <% end %>
-                datetime="<%= transaction.date %>">
-                <%= transaction.date.strftime('%F %T') %>
-              </time>
-            </td>
+            <td>Prix</td>
+            <td>Bénéficiaire</td>
+            <td>Commentaire</td>
+            <td>Date</td>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody id="transactions">
+          <% @transactions.each do |transaction| %>
+            <tr>
+              <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
+              <td>
+                <% bank_trigramme = transaction.receiver.try(:trigramme) %>
+                <% if transaction.id2 != transaction.id %>
+                  <%= bank_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : transaction.receiver.try(:full_name) %>
+                <% end %>
+              </td>
+              <td><%= transaction.comment %></td>
+               <td>
+                <time
+                  <% if transaction.date.to_date == Date.today %>
+                    class="timeago"
+                  <% end %>
+                  datetime="<%= transaction.date %>">
+                  <%= transaction.date.strftime('%F %T') %>
+                </time>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </div>
