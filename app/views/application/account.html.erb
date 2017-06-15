@@ -17,7 +17,7 @@
       <thead>
         <tr>
           <td>Prix</td>
-          <td>Banque</td>
+          <td>Bénéficiaire</td>
           <td>Commentaire</td>
           <td>Date</td>
         </tr>
@@ -28,8 +28,8 @@
             <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
             <td>
               <% bank_trigramme = transaction.receiver.try(:trigramme) %>
-              <% if bank_trigramme != Account::DEFAULT_BANK_TRIGRAMME && transaction.id2 != transaction.id %>
-                <%= bank_trigramme.nil? ? transaction.id2 : bank_trigramme %>
+              <% if transaction.id2 != transaction.id %>
+                <%= bank_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : transaction.receiver.try(:full_name) %>
               <% end %>
             </td>
             <td><%= transaction.comment %></td>
