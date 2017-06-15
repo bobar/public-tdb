@@ -86,6 +86,9 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (1.8.6)
+    keen (1.0.0)
+      addressable (~> 2.5)
+      multi_json (~> 1.12)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
@@ -190,6 +193,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-ui-rails
+  keen
   mysql2 (~> 0.3.18)
   octokit (~> 4.0)
   rails (= 4.2.3)
