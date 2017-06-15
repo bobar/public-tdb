@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def unknown
-    KeenEvent.publish(:unknown_account, frankiz_id: frankiz_id)
+    KeenEvent.publish(:unknown_account, frankiz_id: session[:frankiz_id].to_i)
     session.delete(:frankiz_id)
   end
 
