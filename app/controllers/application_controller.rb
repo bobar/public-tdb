@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
     @account = Account.find_by(frankiz_id: frankiz_id)
     return redirect_to '/unknown' if @account.nil?
     KeenEvent.publish(:account_view, @account.as_json)
-    @transactions = Transaction.where(id: @account.id).where('price != 0')
+    @transactions = Transaction.where(id: @account.id).where('price != 0').where('date > ?', Time.current - 1.week)
       .includes(:receiver)
       .order(date: :desc).limit(100)
   end
