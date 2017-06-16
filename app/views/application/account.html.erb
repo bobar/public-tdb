@@ -1,12 +1,24 @@
 <div class="row">
   <div class="col-md-5 col-md-push-7 text-center">
-    <h2>Bienvenue, <%= @account.first_name %></h2>
+    <h2>Bienvenue, <%= @account.full_name %>, sur ton trigramme <%= @account.trigramme %></h2>
+    <p>
+      Ces information sont fausses&nbsp;?
+      <a target="_blank" href="mailto:bobar@binets.polytechnique.fr?<%= URI.encode_www_form(cc: 'bobar.tdb@gmail.com', subject: "Mauvaise association Frankiz - #{@account.trigramme}")%>">Contacte le BôB</a> pour le signaler&nbsp;!</p>
     <h3>Ton solde est de <strong class="<%= 'text-danger' if @account.balance < 0 %>"><%= number_to_currency(@account.balance / 100.0) %></strong></h3>
     <% if @account.balance < 0 %>
       <h4>Viens donc nous faire un chèque&nbsp;!</h4>
     <% end %>
     <% if @account.total_clopes > 0 %>
       <h3>Tu as dépensé <strong><%= number_to_currency(@account.total_clopes / 100.0) %></strong> en clopes au total.</h3>
+    <% end %>
+    <% if session[:binets_admin].size > 0 %>
+      <hr>
+      <h4>En tant qu'admin, tu peux demander à facturer sur trigramme des évènements pour les binets suivants&nbsp;:</h4>
+      <ul class="text-left">
+        <% session[:binets_admin].each do |id, binet_name| %>
+          <li><a href="/binet/<%= id %>"><%= binet_name %></a></li>
+        <% end %>
+      </ul>
     <% end %>
   </div>
 
@@ -16,7 +28,7 @@
     <% else %>
       <h3 class="text-center">Voici tes transactions des 7 derniers jours&nbsp;:</h3>
 
-      <table id="transactions-table" class="table table-condensed table-bordered table-striped table-hover">
+      <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
           <tr>
             <td>Prix</td>
@@ -25,7 +37,7 @@
             <td>Date</td>
           </tr>
         </thead>
-        <tbody id="transactions">
+        <tbody>
           <% @transactions.each do |transaction| %>
             <tr>
               <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
@@ -36,7 +48,7 @@
                 <% end %>
               </td>
               <td><%= transaction.comment %></td>
-               <td>
+              <td>
                 <time
                   <% if transaction.date.to_date == Date.today %>
                     class="timeago"

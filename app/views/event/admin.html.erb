@@ -1,0 +1,45 @@
+<div class="row text-center">
+  <h2>Gestion des évènements</h2>
+</div>
+
+<div class="row">
+  <table class="table table-condensed table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <td>Demandeur</td>
+        <td>Binet</td>
+        <td>Evenement</td>
+        <td>Date</td>
+        <td colspan="2">Statut</td>
+        <td>Valeur totale</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @events.each do |e| %>
+        <tr>
+          <td><%= e.requester.full_name %></td>
+          <td><%= e.binet_id %></td>
+          <td><%= e.name %></td>
+          <td><%= e.date %></td>
+          <td><%= e.status %></td>
+          <td>
+            <% if !e.approved %>
+              <%= bootstrap_form_tag(url: "/event/approve/#{e.id}", method: :post, remote: true) do |f| %>
+                <%= f.primary 'Approuver l\'évènement', class: 'btn btn-xs btn-primary' %>
+              <% end %>
+            <% elsif !e.closed %>
+              <%= bootstrap_form_tag(url: "/event/close/#{e.id}", method: :post, remote: true) do |f| %>
+                <%= f.primary 'Terminer l\'évènement', class: 'btn btn-xs btn-primary' %>
+              <% end %>
+            <% else %>
+              <%= bootstrap_form_tag(url: "/event/open/#{e.id}", method: :post, remote: true) do |f| %>
+                <%= f.primary 'Rouvrir l\'évènement', class: 'btn btn-xs btn-primary' %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%= number_to_currency((@event_values[e.id] || {})[:value].to_f) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -9,4 +9,19 @@ Rails.application.routes.draw do
     get '/unknown' => :unknown
     post '/issue' => :issue
   end
+
+  controller :event do
+    get '/events/admin' => :admin
+    get '/binet/:binet_id' => :binet_events
+    get '/event/:binet_id/:event_id' => :event
+    post '/event/approve/:event_id' => :approve_event
+    post '/event/close/:event_id' => :close_event
+    post '/event/open/:event_id' => :open_event
+    post '/event/create/:binet_id' => :create_event
+    post '/event/log/:binet_id/:event_id' => :log
+  end
+
+  controller :account, path: 'account' do
+    get 'search' => :search
+  end
 end

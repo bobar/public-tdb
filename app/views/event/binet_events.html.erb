@@ -1,0 +1,62 @@
+<div class="row">
+  <h2 class="text-center">Gestion des évènements pour le binet <b><%= @binet[:name] %></b></h2>
+</div>
+
+<br><br>
+
+<div class="row">
+  <div class="col-md-4 text-right">
+    <h3 style="margin-top: 0;">Crée un nouvel évènement&nbsp;:</h3>
+  </div>
+  <%= bootstrap_form_tag(url: "/event/create/#{@binet[:id]}", method: :post, remote: true, layout: :inline) do |f| %>
+    <div class="col-md-2">
+      <%= f.text_field :name, hide_label: true, placeholder: 'Nom' %>
+    </div>
+    <div class="col-md-2">
+      <%= f.text_field(:date, hide_label: true, placeholder: 'Date',
+        'data-provide' => 'datepicker',
+        'data-date-format' => 'yyyy-mm-dd',
+        'data-date-start-view' => 0,
+        'data-date-max-view-mode' => 2,
+      ) %>
+    </div>
+    <div class="col-md-2">
+      <%= f.form_group do %>
+        <%= f.primary 'Créer' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<br><br>
+
+<% unless @events.empty? %>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <td>Nom</td>
+            <td>Date</td>
+            <td>Statut</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @events.each do |e| %>
+            <tr>
+              <td>
+                <% if e.approved %>
+                  <a href="/event/<%= @binet[:id] %>/<%= e.id %>"><%= e.name %></a>
+                <% else %>
+                  <%= e.name %>
+                <% end %>
+              </td>
+              <td><%= e.date %></td>
+              <td><%= e.status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,62 @@
+<div class="row text-center">
+  <h2>Binet <b><%= @binet[:name] %></b> - <%= @event.name %></h2>
+</div>
+
+<div class="row">
+  <div class="col-md-6 col-md-push-6 text-center">
+    <% unless @event.closed %>
+      <h3>Loggue une transaction&nbsp;:</h3>
+      <div class="row">
+        <div class="col-md-6">
+          <input id="account-search" type="text" class="form-control" placeholder="Recherche (trigramme ou nom / prénom)">
+          <h3 id="trigramme"></h3>
+          <h3 id="full_name"></h3>
+          <h4 id="promo"></h4>
+          <%= bootstrap_form_tag(
+                remote: true, url: "/event/log/#{@event.binet_id}/#{@event.id}", method: :post, layout: :inline,
+                html: { id: 'log-form' }) do |f| %>
+            <%= f.hidden_field(:account_id) %>
+            <%= f.text_field(:amount, wrapper: { class: 'amount-form-group' }, class: 'mousetrap', hide_label: true, prepend: I18n.t(:currency), append: f.primary('Log !')) %>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <img class="account-image">
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-6 col-md-pull-6">
+    <% if @transactions.empty? %>
+      <h3 class="text-center">Aucune transaction pour l'instant</h3>
+    <% else %>
+      Voici les transactions de l'évènement, pour un total de <b><%= number_to_currency(@transactions.map(&:price).sum) %> :</b>
+      <table class="table table-condensed table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <td>Prix</td>
+            <td>Trigramme</td>
+            <td>Nom</td>
+            <td>Date</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @transactions.each do |t| %>
+            <tr>
+              <td><%= number_with_precision(t.price, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
+              <td><%= t.trigramme %></td>
+              <td><%= t.first_name %> <%= t.last_name %></td>
+              <td>
+                <time
+                  <% if t.updated_at.to_date == Date.today %>
+                    class="timeago"
+                  <% end %>
+                  datetime="<%= t.updated_at %>">
+                  <%= t.updated_at.strftime('%F %T') %>
+                </time>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+    <% end %>
+  </div>
+</div>
