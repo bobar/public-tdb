@@ -26,6 +26,7 @@ class EventController < ApplicationController
     fail TdbException, 'L\'évènement ne peut pas être retrouvé' if event.nil?
     fail TdbException, 'L\'évènement n\'a pas été approuvé' unless event.approved
     fail TdbException, 'L\'évènement est terminé' if event.closed
+    fail TdbException, 'Pas de compte sélectionné' if account.nil?
     price = params[:amount].to_f.round(2)
     fail TdbException, 'Le montant doit être positif' unless price > 0
     EventTransaction.create(
