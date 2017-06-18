@@ -23,11 +23,7 @@ $(document).ready(function() {
   var i = 0;
 
   (function cycle() {
-      slogans.eq(i).fadeIn(400)
-                .delay(2000)
-                .fadeOut(400, cycle);
-
-      i = ++i % slogans.length;
+    slogans.eq(i).fadeIn(400).delay(2000).fadeOut(400, cycle);
+    i = ++i % slogans.length;
   })();
 });
-

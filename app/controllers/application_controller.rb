@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     timestamp = Time.current.to_i.to_s
     site = ENV['FKZ_SITE']
     location = '...'
-    request = ['names', 'promo'].to_json
+    request = %w(names promo binets_admin).to_json
     digest = Digest::MD5.hexdigest(timestamp + site + ENV['FKZ_KEY'] + request)
     remote = 'https://www.frankiz.net/remote?timestamp=' + timestamp +
              '&site=' + site +
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
     digest = params[:hash]
     fail 'Délai dépassé' if (timestamp.to_i - Time.current.to_i).abs > 600
     fail 'Session compromise' if Digest::MD5.hexdigest(timestamp + ENV['FKZ_KEY'] + response) != digest
-    response = JSON.load(response)
+    response = JSON.parse(response)
     session[:frankiz_id] = response['uid']
     redirect_to '/'
   end

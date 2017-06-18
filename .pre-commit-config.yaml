@@ -1,0 +1,66 @@
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    sha: v0.7.1
+    hooks:
+    -   id: trailing-whitespace
+        exclude: ^spec/fixtures/
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+        exclude: ^(spec/fixtures/|config/drive_session.json$)
+    -   id: check-added-large-files
+        args:
+        - --maxkb=3000
+-   repo: git://github.com/pricematch/pricematch-pre-commit-hooks
+    sha: 9a41f686d70c32638d43a269a31c8023fd3ee8fe
+    hooks:
+    -   id: do_not_commit
+    -   id: check_rails_env_with_methods
+    -   id: no_commas_in_string_arrays
+-   repo: local
+    hooks:
+    -   id: rubocop
+        language: ruby
+        name: rubocop
+        additional_dependencies:
+        - rubocop:0.43.0
+        - rubocop-thread_safety:0.3.1
+        entry: rubocop
+        files: \.(rb|rake)$
+        exclude: schema.rb
+        args:
+        - --require
+        - rubocop-thread_safety
+        - --config=config/rubocop/rubocop.yml
+    -   id: rails-erb-lint
+        language: ruby
+        name: rails-erb-lint
+        additional_dependencies:
+        - rails-erb-lint
+        entry: rails-erb-lint
+        files: \.html\.erb$
+        args:
+        - check
+        - -e
+    -   id: ruby
+        language: ruby
+        name: Ruby syntax
+        entry: ruby
+        files: \.(rb|rake)$
+        exclude: schema.rb
+        args:
+        - -c
+    -   id: eslint
+        language: node
+        name: eslint
+        entry: eslint
+        files: \.js$
+        additional_dependencies:
+        - eslint
+        exclude: ^vendor/assets/javascripts/
+    -   id: scss-lint
+        language: ruby
+        name: scss-lint
+        additional_dependencies:
+        - scss_lint
+        entry: scss-lint
+        files: \.scss$
+        exclude: ^app/assets/stylesheets/themes/
