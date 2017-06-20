@@ -1,4 +1,5 @@
 // 'bootstrap-sprockets' must be imported before 'bootstrap' and 'bootstrap/variables'
+@import 'responsive_table';
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import 'bootstrap-datepicker3';
@@ -46,7 +47,8 @@ body {
 }
 
 .amount-form-group {
-  .input-group-btn, .input-group-addon {
+  .input-group-btn,
+  .input-group-addon {
     width: 1% !important;
   }
 }

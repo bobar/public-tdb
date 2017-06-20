@@ -3,35 +3,40 @@
 </div>
 
 <div class="row">
-  <table class="table table-condensed table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <td>Demandeur</td>
-        <td>Binet</td>
-        <td>Evenement</td>
-        <td>Date</td>
-        <td colspan="2">Statut</td>
-        <td>Valeur totale</td>
-      </tr>
-    </thead>
-    <tbody>
-      <% @events.each do |e| %>
+  <section id="flip-scroll">
+    <table class="table-bordered table-striped table-condensed cf">
+      <thead class="cf">
         <tr>
-          <td><%= e.requester.full_name %></td>
-          <td><%= e.binet_id %></td>
-          <td><%= e.name %></td>
-          <td><%= e.date %></td>
-          <td><%= e.status %></td>
-          <td>
-            <% Event::STATUS_CHANGE[e.status].each do |new_status, description| %>
-              <%= bootstrap_form_tag(url: "/event/status/#{e.id}/#{new_status}", method: :post, remote: true, layout: :inline) do |f| %>
-                <%= f.primary description, class: 'btn btn-xs btn-primary' %>
-              <% end %>
-            <% end %>
-          </td>
-          <td><%= number_to_currency((@event_values[e.id] || {})[:value].to_f) %></td>
+          <td>Demandeur</td>
+          <td>Binet</td>
+          <td>Evenement</td>
+          <td>Date</td>
+          <td>Statut</td>
+          <td style="min-height: 32px"></td>
+          <td>Valeur totale</td>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @events.each do |e| %>
+          <tr>
+            <td><%= e.requester.full_name %></td>
+            <td><%= e.binet_id %></td>
+            <td><%= e.name %></td>
+            <td><%= e.date %></td>
+            <td><%= e.status %></td>
+            <td style="min-height: 32px">
+              <% Event::STATUS_CHANGE[e.status].each do |new_status, description| %>
+                <div style="float: left;">
+                  <%= bootstrap_form_tag(url: "/event/status/#{e.id}/#{new_status}", method: :post, remote: true, layout: :inline) do |f| %>
+                    <%= f.primary description, class: 'btn btn-xs btn-primary', style: 'margin: 0 3px;' %>
+                  <% end %>
+                </div>
+              <% end %>
+            </td>
+            <td><%= number_to_currency((@event_values[e.id] || {})[:value].to_f) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
 </div>
