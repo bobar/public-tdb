@@ -23,7 +23,7 @@
             <td><%= e.binet_id %></td>
             <td><%= e.name %></td>
             <td><%= e.date %></td>
-            <td><%= e.status %></td>
+            <td><%= e.readable_status %></td>
             <td style="min-height: 32px">
               <% Event::STATUS_CHANGE[e.status].each do |new_status, description| %>
                 <div style="float: left;">
