@@ -44,15 +44,9 @@
         <tbody>
           <% @events.each do |e| %>
             <tr>
-              <td>
-                <% if e.approved %>
-                  <a href="/event/<%= @binet[:id] %>/<%= e.id %>"><%= e.name %></a>
-                <% else %>
-                  <%= e.name %>
-                <% end %>
-              </td>
+              <td><a href="/event/<%= @binet[:id] %>/<%= e.id %>"><%= e.name %></a></td>
               <td><%= e.date %></td>
-              <td><%= e.status %></td>
+              <td><%= e.readable_status %></td>
             </tr>
           <% end %>
         </tbody>

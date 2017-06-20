@@ -2,7 +2,7 @@ class EventController < ApplicationController
   before_action :load_binet
 
   def event
-    @event = Event.find_by(id: params[:event_id], binet_id: @binet[:id], approved: true)
+    @event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
     not_found! if @event.nil?
     @transactions = EventTransaction.where(event_id: @event.id).order(updated_at: :desc)
   end
@@ -24,8 +24,7 @@ class EventController < ApplicationController
     account = Account.find_by(id: params[:account_id])
     event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
     fail TdbException, 'L\'évènement ne peut pas être retrouvé' if event.nil?
-    fail TdbException, 'L\'évènement n\'a pas été approuvé' unless event.approved
-    fail TdbException, 'L\'évènement est terminé' if event.closed
+    fail TdbException, 'L\'évènement n\'est pas en cours' unless event.opened?
     fail TdbException, 'Pas de compte sélectionné' if account.nil?
     price = params[:amount].to_f.round(2)
     fail TdbException, 'Le montant doit être positif' unless price > 0
@@ -46,21 +45,14 @@ class EventController < ApplicationController
     @events = Event.includes(:requester).order(date: :desc)
   end
 
-  def approve_event
+  def change_status
     require_bob_admin!
-    Event.find(params[:event_id]).update(approved: true)
-    render_reload
-  end
-
-  def close_event
-    require_bob_admin!
-    Event.find(params[:event_id]).update(closed: true)
-    render_reload
-  end
-
-  def open_event
-    require_bob_admin!
-    Event.find(params[:event_id]).update(closed: false)
+    e = Event.find(params[:event_id])
+    status = e.status
+    new_status = params[:new_status]
+    fail TdbException, "Le statut ne peux pas être changé de #{Event::STATUSES[status]} à #{Event::STATUSES[new_status]}" unless
+      Event::STATUS_CHANGE[status].key?(new_status)
+    e.update(status: new_status)
     render_reload
   end
 

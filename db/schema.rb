@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170616170424) do
+ActiveRecord::Schema.define(version: 20170620204517) do
 
   create_table "accounts", force: :cascade do |t|
     t.string  "trigramme",    limit: 3
@@ -78,12 +78,11 @@ ActiveRecord::Schema.define(version: 20170616170424) do
   add_index "event_transactions", ["event_id"], name: "fk_rails_62eab051bc", using: :btree
 
   create_table "events", force: :cascade do |t|
-    t.string   "name",         limit: 255,                 null: false
-    t.date     "date",                                     null: false
-    t.string   "binet_id",     limit: 255,                 null: false
-    t.integer  "requester_id", limit: 4,                   null: false
-    t.boolean  "approved",                 default: false, null: false
-    t.boolean  "closed",                   default: false, null: false
+    t.string   "name",         limit: 255,             null: false
+    t.date     "date",                                 null: false
+    t.string   "binet_id",     limit: 255,             null: false
+    t.integer  "requester_id", limit: 4,               null: false
+    t.integer  "status",       limit: 4,   default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
