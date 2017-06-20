@@ -58,17 +58,18 @@ $(document).ready(function() {
     autoFocus: true,
     source: '/account/search',
     minLength: 3,
-    focus: function(event, ui) {
+    focus: function() {
       return false;
     },
     select: function(event, ui) {
       $('#trigramme').text(ui.item.trigramme);
       $('#full_name').text(ui.item.full_name);
-      $('#promo').text(ui.item.promo + " - " + ui.item.status);
+      $('#promo').text(ui.item.promo + ' - ' + ui.item.status);
       $('#promo').toggleClass('text-danger', ui.item.status !== 'X platal');
-      $('#_account_id').val(ui.item.value)
+      $('#_account_id').val(ui.item.value);
       $('.account-image').attr('src', ui.item.picture);
       $('#amount').focus();
+      $('#account-search').val('');
       return false;
     }
   });
