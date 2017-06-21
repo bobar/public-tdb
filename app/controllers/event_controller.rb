@@ -5,6 +5,7 @@ class EventController < ApplicationController
     @event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
     not_found! if @event.nil?
     @transactions = EventTransaction.where(event_id: @event.id).order(updated_at: :desc)
+    @comments = EventComment.where(event_id: @event.id).order(:created_at)
   end
 
   def binet_events
@@ -56,11 +57,18 @@ class EventController < ApplicationController
     render_reload
   end
 
+  def add_comment
+    event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
+    fail TdbException, 'L\'évènement ne peut pas être retrouvé' if event.nil?
+    EventComment.create(event_id: event.id, author_id: session[:frankiz_id], comment: params[:comment].strip)
+    render_reload
+  end
+
   private
 
   def load_binet
     return unless params.key?(:binet_id)
-    not_found! unless session[:binets_admin].key?(params[:binet_id])
+    not_found! unless [params[:binet_id], 'bobar'].any? { |binet| session[:binets_admin].key?(binet) }
     @binet = { id: params[:binet_id], name: session[:binets_admin][params[:binet_id]] }.with_indifferent_access
   end
 

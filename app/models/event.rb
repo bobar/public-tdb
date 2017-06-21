@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-  belongs_to :requester, class_name: :Account, primary_key: :frankiz_id
+  belongs_to :requester, class_name: :User, primary_key: :frankiz_id
 
   enum status: {
     requested: 0,

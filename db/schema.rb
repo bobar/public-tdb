@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620204517) do
+ActiveRecord::Schema.define(version: 20170621214808) do
 
   create_table "accounts", force: :cascade do |t|
     t.string  "trigramme",    limit: 3
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(version: 20170620204517) do
     t.boolean "gestion_admin",             default: false, null: false
   end
 
+  create_table "event_comments", force: :cascade do |t|
+    t.integer  "event_id",   limit: 4,     null: false
+    t.integer  "author_id",  limit: 4,     null: false
+    t.text     "comment",    limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "event_transactions", force: :cascade do |t|
     t.integer  "event_id",   limit: 4,                 null: false
     t.integer  "account_id", limit: 4,                 null: false
@@ -86,6 +94,12 @@ ActiveRecord::Schema.define(version: 20170620204517) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "schema_migrations_public", id: false, force: :cascade do |t|
+    t.string "version", limit: 255, null: false
+  end
+
+  add_index "schema_migrations_public", ["version"], name: "unique_schema_migrations_public", unique: true, using: :btree
 
   create_table "transactions", id: false, force: :cascade do |t|
     t.integer  "id",      limit: 4

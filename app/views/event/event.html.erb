@@ -36,6 +36,49 @@
     <% end %>
   </div>
   <div class="col-md-6 col-md-pull-6">
+    <div class="text-center">
+      <a role="button" data-toggle="collapse" href="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
+        Afficher les commentaires pour cet évènements
+      </a>
+    </div>
+    <div class="collapse panel panel-default" id="commentsCollapse">
+      <table class="table table-condensed">
+        <tbody>
+          <% if @comments.empty? %>
+            <tr>
+              <td colspan="2">Aucun commentaire pour l'instant</td>
+            </tr>
+          <% end %>
+          <% @comments.each do |comment| %>
+            <tr>
+              <td>
+                <strong><%= comment.author.full_name %></strong>
+                <br>
+                <small>
+                  <time
+                    <% if comment.updated_at.to_date == Date.today %>
+                      class="timeago"
+                    <% end %>
+                    datetime="<%= comment.updated_at %>">
+                    <%= comment.updated_at.strftime('%F %T') %>
+                  </time>
+                </small>
+              </td>
+              <td><%= simple_format(comment.comment) %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td>Ajouter un commentaire&nbsp;:</td>
+            <td>
+              <%= bootstrap_form_tag(remote: true, url: "/event/comment/#{@event.binet_id}/#{@event.id}", method: :post) do |f| %>
+                <%= f.text_area :comment, hide_label: true %>
+                <%= f.primary 'Commenter' %>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <% if @transactions.empty? %>
       <h3 class="text-center">Aucune transaction pour l'instant</h3>
     <% else %>

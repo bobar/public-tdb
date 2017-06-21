@@ -17,5 +17,7 @@ module PublicTdb
     config.log_level = ENV['LOG_LEVEL'].downcase.to_sym if ENV['LOG_LEVEL']
     config.i18n.default_locale = :fr
     config.filter_parameters << :password
+
+    ActiveRecord::Base.schema_migrations_table_name = 'schema_migrations_public'
   end
 end

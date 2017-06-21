@@ -21,7 +21,7 @@
           <tr>
             <td><%= e.requester.full_name %></td>
             <td><%= e.binet_id %></td>
-            <td><%= e.name %></td>
+            <td><a href="/event/<%= e.binet_id %>/<%= e.id %>"><%= e.name %></a></td>
             <td><%= e.date %></td>
             <td><%= e.readable_status %></td>
             <td style="min-height: 32px">
