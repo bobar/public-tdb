@@ -4,7 +4,9 @@
 
 <div class="row">
   <div class="col-md-6 col-md-push-6 text-center">
-    <% if @event.opened? %>
+    <% if @event.denied? %>
+      <h3>Cet évènement a été refusé par les BôBarmans.</h3>
+    <% elsif @event.opened? %>
       <h3>Loggue une transaction&nbsp;:</h3>
       <div class="row">
         <div class="col-md-6">
@@ -23,6 +25,8 @@
           <img class="account-image">
         </div>
       </div>
+    <% else %>
+      <h3>Tu pourra logguer des transactions une fois l'évènement ouvert.</h3>
     <% end %>
   </div>
   <div class="col-md-6 col-md-pull-6">
@@ -57,6 +61,15 @@
             </tr>
           <% end %>
         </tbody>
+      </table>
     <% end %>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-12 visible-xs visible-sm text-center">
+    <p>Les photos ne s'affichent pas&nbsp;? Il faut autoriser les cookies tiers, plus d'information <a href="https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DAndroid&hl=fr">ici</a></p>
   </div>
 </div>
