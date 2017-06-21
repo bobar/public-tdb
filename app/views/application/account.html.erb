@@ -31,22 +31,33 @@
       <table class="table table-condensed table-bordered table-striped table-hover">
         <thead>
           <tr>
-            <td>Prix</td>
+            <td>Débit</td>
+            <td>Crédit</td>
             <td>Bénéficiaire</td>
             <td>Commentaire</td>
             <td>Date</td>
           </tr>
         </thead>
         <tbody>
-          <% @transactions.each do |transaction| %>
+          <% @transactions.each do |transaction|
+              other_account, amount = nil, nil
+              is_debit = transaction.buyer_id == @account.id
+              if is_debit
+                other_account = transaction.receiver
+              else
+                other_account = transaction.buyer
+              end
+              other_trigramme = other_account.try(:trigramme)
+            %>
             <tr>
-              <td><%= number_with_precision(transaction.price / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
-              <td>
-                <% bank_trigramme = transaction.receiver.try(:trigramme) %>
-                <% if transaction.id2 != transaction.id %>
-                  <%= bank_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : transaction.receiver.try(:full_name) %>
-                <% end %>
-              </td>
+              <% unless is_debit %>
+                <td></td>
+              <% end %>
+              <td><%= number_with_precision(transaction.amount / 100.0, strip_insignificant_zeros: true, significant: false, precision: 2, delimiter: ' ') %></td>
+              <% if is_debit %>
+                <td></td>
+              <% end %>
+              <td><%= other_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : other_account.try(:full_name) %></td>
               <td><%= transaction.comment %></td>
               <td>
                 <time
