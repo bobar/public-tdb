@@ -9,17 +9,23 @@
     <% elsif @event.opened? %>
       <h3>Loggue une transaction&nbsp;:</h3>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" style="margin-bottom: 10px;">
           <input id="account-search" type="text" class="form-control" placeholder="Recherche (trigramme ou nom / prénom)">
-          <h3 id="trigramme"></h3>
-          <h3 id="full_name"></h3>
-          <h4 id="promo"></h4>
+        </div>
+        <div class="col-md-6" style="margin-bottom: 10px;">
           <%= bootstrap_form_tag(
                 remote: true, url: "/event/log/#{@event.binet_id}/#{@event.id}", method: :post, layout: :inline,
                 html: { id: 'log-form' }) do |f| %>
             <%= f.hidden_field(:account_id) %>
-            <%= f.text_field(:amount, wrapper: { class: 'amount-form-group' }, class: 'mousetrap', hide_label: true, prepend: I18n.t(:currency), append: f.primary('Log !')) %>
+            <%= f.text_field(:amount, placeholder: 'Montant', wrapper: { class: 'amount-form-group' }, class: 'mousetrap', hide_label: true, prepend: I18n.t(:currency), append: f.primary('Log !')) %>
           <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <h4><big><strong id="trigramme"></strong></big></h4>
+          <h4 id="full_name"></h4>
+          <h4 id="promo"></h4>
         </div>
         <div class="col-md-6">
           <img class="account-image">
