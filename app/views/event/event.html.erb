@@ -38,17 +38,18 @@
   <div class="col-md-6 col-md-pull-6">
     <div class="text-center">
       <a role="button" data-toggle="collapse" href="#commentsCollapse" aria-expanded="false" aria-controls="commentsCollapse">
-        Afficher les commentaires pour cet évènements
+        <% if @comments.size == 0 %>
+          Ajouter un commentaire à cet évènement
+        <% elsif @comments.size == 1 %>
+          Afficher le commentaire pour cet évènement
+        <% else %>
+          Afficher les <%= @comments.size %> commentaires pour cet évènement
+        <% end %>
       </a>
     </div>
     <div class="collapse panel panel-default" id="commentsCollapse">
       <table class="table table-condensed">
         <tbody>
-          <% if @comments.empty? %>
-            <tr>
-              <td colspan="2">Aucun commentaire pour l'instant</td>
-            </tr>
-          <% end %>
           <% @comments.each do |comment| %>
             <tr>
               <td>
