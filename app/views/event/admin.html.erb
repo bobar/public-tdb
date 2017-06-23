@@ -17,6 +17,7 @@
             <td>Statut</td>
             <td style="min-height: 32px"></td>
             <td>Valeur totale</td>
+            <td>Dernier commentaire</td>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,14 @@
                 <% end %>
               </td>
               <td><%= number_to_currency((@event_values[e.id] || {})[:value].to_f) %></td>
+              <td>
+                <% comment = e.comments.order(:updated_at).last %>
+                <% if comment %>
+                  <%= comment.author.full_name %> - <%= comment.updated_at.strftime('%F %T') %>
+                <% else %>
+                  Jamais
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

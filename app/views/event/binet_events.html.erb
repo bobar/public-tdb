@@ -40,6 +40,7 @@
             <td>Nom</td>
             <td>Date</td>
             <td>Statut</td>
+            <td>Dernier commentaire</td>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +49,14 @@
               <td><a href="/event/<%= @binet[:id] %>/<%= e.id %>"><%= e.name %></a></td>
               <td><%= e.date %></td>
               <td><%= e.readable_status %></td>
+              <td>
+                <% comment = e.comments.order(:updated_at).last %>
+                <% if comment %>
+                  <%= comment.author.full_name %> - <%= comment.updated_at.strftime('%F %T') %>
+                <% else %>
+                  Jamais
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

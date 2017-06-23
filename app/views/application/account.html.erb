@@ -40,14 +40,9 @@
         </thead>
         <tbody>
           <% @transactions.each do |transaction|
-              other_account, amount = nil, nil
               is_debit = transaction.buyer_id == @account.id
-              if is_debit
-                other_account = transaction.receiver
-              else
-                other_account = transaction.buyer
-              end
-              other_trigramme = other_account.try(:trigramme)
+              partner = is_debit ? transaction.receiver : transaction.buyer
+              partner_trigramme = partner.try(:trigramme)
             %>
             <tr>
               <% unless is_debit %>
@@ -57,7 +52,7 @@
               <% if is_debit %>
                 <td></td>
               <% end %>
-              <td><%= other_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : other_account.try(:full_name) %></td>
+              <td><%= partner_trigramme == Account::DEFAULT_BANK_TRIGRAMME ? 'BôB' : partner.try(:full_name) %></td>
               <td><%= transaction.comment %></td>
               <td>
                 <time

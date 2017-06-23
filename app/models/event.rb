@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   belongs_to :requester, class_name: :User, primary_key: :frankiz_id
+  has_many :comments, class_name: :EventComment
 
   enum status: {
     requested: 0,
