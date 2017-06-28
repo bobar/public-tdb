@@ -41,7 +41,15 @@
               <td>
                 <% comment = e.comments.order(:updated_at).last %>
                 <% if comment %>
+                  <% new_messages = !comment.reader_ids.include?(session[:frankiz_id].to_i) %>
+                  <% if new_messages %>
+                    <a class="text-primary" href="/event/<%= e.binet_id %>/<%= e.id %>?show_comments=true"><b>
+                      <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                  <% end %>
                   <%= comment.author.full_name %> - <%= comment.updated_at.strftime('%F %T') %>
+                  <% if new_messages %>
+                    </b></a>
+                  <% end %>
                 <% else %>
                   Jamais
                 <% end %>

@@ -47,7 +47,7 @@
         <% end %>
       </a>
     </div>
-    <div class="collapse panel panel-default" id="commentsCollapse">
+    <div class="collapse panel panel-default <%= 'in' if params[:show_comments] == 'true' %>" id="commentsCollapse">
       <table class="table table-condensed">
         <tbody>
           <% @comments.each do |comment| %>

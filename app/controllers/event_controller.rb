@@ -1,11 +1,17 @@
 class EventController < ApplicationController
   before_action :load_binet
 
+  after_action :mark_comments_read, only: :event
+
   def event
     @event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
     not_found! if @event.nil?
     @transactions = EventTransaction.where(event_id: @event.id).order(updated_at: :desc)
     @comments = EventComment.where(event_id: @event.id).order(:created_at)
+  end
+
+  def mark_comments_read
+    @comments.each { |c| c.mark_read_by(session[:frankiz_id]) } if params[:show_comments]
   end
 
   def binet_events
@@ -60,7 +66,12 @@ class EventController < ApplicationController
   def add_comment
     event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
     fail TdbException, 'L\'évènement ne peut pas être retrouvé' if event.nil?
-    EventComment.create(event_id: event.id, author_id: session[:frankiz_id], comment: params[:comment].strip)
+    EventComment.create(
+      event_id: event.id,
+      author_id: session[:frankiz_id],
+      comment: params[:comment].strip,
+      read_by: { author_id => Time.current.utc }.to_json,
+    )
     render_reload
   end
 

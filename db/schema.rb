@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170621214808) do
+ActiveRecord::Schema.define(version: 20170628142101) do
 
   create_table "accounts", force: :cascade do |t|
     t.string  "trigramme",    limit: 3
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 20170621214808) do
     t.integer  "event_id",   limit: 4,     null: false
     t.integer  "author_id",  limit: 4,     null: false
     t.text     "comment",    limit: 65535
+    t.text     "read_by",    limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -101,16 +102,17 @@ ActiveRecord::Schema.define(version: 20170621214808) do
 
   add_index "schema_migrations_public", ["version"], name: "unique_schema_migrations_public", unique: true, using: :btree
 
-  create_table "transactions", id: false, force: :cascade do |t|
-    t.integer  "id",      limit: 4
-    t.integer  "price",   limit: 4
-    t.text     "comment", limit: 65535
-    t.integer  "admin",   limit: 4
-    t.integer  "id2",     limit: 4
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "buyer_id",    limit: 4
+    t.integer  "amount",      limit: 4
+    t.text     "comment",     limit: 16777215
+    t.integer  "admin",       limit: 4
+    t.integer  "receiver_id", limit: 4
+    t.boolean  "is_tobacco",                   default: false, null: false
     t.datetime "date"
   end
 
-  add_index "transactions", ["id", "date"], name: "id_date", using: :btree
+  add_index "transactions", ["buyer_id", "date"], name: "id_date", using: :btree
 
   create_table "transactions_history", id: false, force: :cascade do |t|
     t.integer  "id",      limit: 4
