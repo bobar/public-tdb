@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/widgets/autocomplete
+//= require datetimepicker
+//= require moment
+//= require eonasdan-bootstrap-datetimepicker
 //= require_tree .
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
@@ -36,7 +39,24 @@ function bind(shortcut, handler, return_true) {
 }
 
 $(document).ready(function() {
-  jQuery('time.timeago').timeago();
+  $('time.timeago').timeago();
+  $('.datetimepicker.begin').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    sideBySide: true,
+    stepping: 15,
+  });
+  $('.datetimepicker.end').datetimepicker({
+    format: 'YYYY-MM-DD HH:mm',
+    sideBySide: true,
+    stepping: 15,
+    useCurrent: false,
+  });
+  $('.datetimepicker.begin').on('dp.change', function (e) {
+    $('.datetimepicker.end').data('DateTimePicker').minDate(e.date);
+  });
+  $('.datetimepicker.end').on('dp.change', function (e) {
+    $('.datetimepicker.begin').data('DateTimePicker').maxDate(e.date);
+  });
 
   var slogans = $('span[id^="slogan-"]').hide();
   var i = 0;

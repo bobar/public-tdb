@@ -15,15 +15,17 @@ class EventController < ApplicationController
   end
 
   def binet_events
-    @events = Event.where(binet_id: @binet[:id]).order(date: :desc)
+    @events = Event.where(binet_id: @binet[:id]).order(begins_at: :desc)
   end
 
   def create_event
     event_name = params[:name].to_s.strip
-    event_date = params[:date]
+    begins_at = params[:begins_at]
+    ends_at = params[:ends_at]
     fail TdbException, 'Le nom est obligatoire' if event_name.blank?
-    fail TdbException, 'La date est obligatoire' if event_date.nil?
-    Event.create(binet_id: @binet[:id], name: event_name, date: event_date, requester_id: session[:frankiz_id])
+    fail TdbException, 'La date de debut est obligatoire' if begins_at.nil?
+    fail TdbException, 'La date de fin est obligatoire' if ends_at.nil?
+    Event.create(binet_id: @binet[:id], name: event_name, begins_at: begins_at, ends_at: ends_at, requester_id: session[:frankiz_id])
     render_reload
   end
 
@@ -49,7 +51,7 @@ class EventController < ApplicationController
   def admin
     require_bob_admin!
     @event_values = EventTransaction.select(:event_id, 'SUM(price) value').group(:event_id).index_by(&:event_id)
-    @events = Event.includes(:requester).order(date: :desc)
+    @events = Event.includes(:requester).order(begins_at: :desc)
   end
 
   def change_status

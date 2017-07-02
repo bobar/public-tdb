@@ -18,3 +18,5 @@
 
 config/rubocop/.rubocop*
 .byebug_history
+
+/vendor/ruby

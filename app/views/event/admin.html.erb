@@ -13,7 +13,8 @@
             <td>Demandeur</td>
             <td>Binet</td>
             <td>Evenement</td>
-            <td>Date</td>
+            <td>Début</td>
+            <td>Fin</td>
             <td>Statut</td>
             <td style="min-height: 32px"></td>
             <td>Valeur totale</td>
@@ -26,7 +27,8 @@
               <td><%= e.requester.full_name %></td>
               <td><%= e.binet_id %></td>
               <td><a href="/event/<%= e.binet_id %>/<%= e.id %>"><%= e.name %></a></td>
-              <td><%= e.date %></td>
+              <td><%= e.begins_at.strftime('%F %T') %></td>
+              <td><%= e.ends_at.strftime('%F %T') %></td>
               <td><%= e.readable_status %></td>
               <td style="min-height: 32px">
                 <% Event::STATUS_CHANGE[e.status].each do |new_status, description| %>

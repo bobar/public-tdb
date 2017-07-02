@@ -16,12 +16,8 @@
   <div class="col-md-7 col-sm-8">
     <%= bootstrap_form_tag(url: "/event/create/#{@binet[:id]}", method: :post, remote: true, layout: :inline) do |f| %>
       <%= f.text_field :name, hide_label: true, placeholder: 'Nom' %>
-      <%= f.text_field(:date, hide_label: true, placeholder: 'Date',
-        'data-provide' => 'datepicker',
-        'data-date-format' => 'yyyy-mm-dd',
-        'data-date-start-view' => 0,
-        'data-date-max-view-mode' => 2,
-      ) %>
+      <%= f.text_field(:begins_at, hide_label: true, placeholder: 'Début', class: 'datetimepicker begin') %>
+      <%= f.text_field(:ends_at, hide_label: true, placeholder: 'Fin', class: 'datetimepicker end') %>
       <%= f.form_group do %>
         <%= f.primary 'Créer' %>
       <% end %>
@@ -38,7 +34,8 @@
         <thead>
           <tr>
             <td>Nom</td>
-            <td>Date</td>
+            <td>Début</td>
+            <td>Fin</td>
             <td>Statut</td>
             <td>Dernier commentaire</td>
           </tr>
@@ -47,7 +44,8 @@
           <% @events.each do |e| %>
             <tr>
               <td><a href="/event/<%= @binet[:id] %>/<%= e.id %>"><%= e.name %></a></td>
-              <td><%= e.date %></td>
+              <td><%= e.begins_at.strftime('%F %T') %></td>
+              <td><%= e.ends_at.strftime('%F %T') %></td>
               <td><%= e.readable_status %></td>
               <td>
                 <% comment = e.comments.order(:updated_at).last %>
