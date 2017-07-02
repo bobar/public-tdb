@@ -32,6 +32,12 @@ class Event < ActiveRecord::Base
     paid: {},
   }.with_indifferent_access.freeze
 
+  after_initialize do |event|
+    event.update(status: :finished) if event.approved? && event.updated_at < event.ends_at && event.ends_at < Time.current
+    event.update(status: :opened) if event.approved? && event.updated_at < event.begins_at && event.begins_at < Time.current
+    event.update(status: :finished) if event.opened? && event.updated_at < event.ends_at && event.ends_at < Time.current
+  end
+
   def readable_status
     STATUSES[status]
   end
