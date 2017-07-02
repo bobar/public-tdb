@@ -20,3 +20,4 @@ config/rubocop/.rubocop*
 .byebug_history
 
 /vendor/ruby
+config/credentials.yml
