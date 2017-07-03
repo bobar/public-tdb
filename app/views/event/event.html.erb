@@ -4,8 +4,23 @@
 
 <div class="row">
   <div class="col-md-6 col-md-push-6 text-center">
-    <% if @event.denied? %>
+    <% if @event.requested? %>
+      <h3>Cet évènement est en attente d'approbation.</h3>
+    <% elsif @event.denied? %>
       <h3>Cet évènement a été refusé par les BôBarmans.</h3>
+    <% elsif @event.approved? %>
+      <h3>Tu pourra logguer des transactions une fois l'évènement ouvert.</h3>
+      <p>L'évènement sera automatiquement ouvert à sa date de début</p>
+    <% elsif @event.finished? %>
+      <h3>L'évènement est terminé, tu peux le soumettre pour paiement en cliquant ci-dessous.</h3>
+      <p>La liste finale sera envoyée aux BôBarmans, et tu recevra une copie par mail.</p>
+      <%= bootstrap_form_tag(remote: true, url: "/event/submit/#{@event.binet_id}/#{@event.id}", method: :post, layout: :inline) do |f| %>
+        <%= f.primary 'Soumettre pour paiement' %>
+      <% end %>
+    <% elsif @event.submitted? %>
+      <h3>L'évènement est en attente de paiement.</h3>
+    <% elsif @event.paid? %>
+      <h3>L'évènement a été débité sur les trigrammes, contacte le TDB pour récupérer un chèque.</h3>
     <% elsif @event.opened? %>
       <h3>Loggue une transaction&nbsp;:</h3>
       <div class="row">
@@ -31,8 +46,6 @@
           <img class="account-image">
         </div>
       </div>
-    <% else %>
-      <h3>Tu pourra logguer des transactions une fois l'évènement ouvert.</h3>
     <% end %>
   </div>
   <div class="col-md-6 col-md-pull-6">

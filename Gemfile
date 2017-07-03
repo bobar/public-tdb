@@ -21,6 +21,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'sentry-raven'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
+gem 'write_xlsx'
 
 group :development, :test do
   gem 'byebug'

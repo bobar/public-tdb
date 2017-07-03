@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get '/binet/:binet_id' => :binet_events
     get '/event/:binet_id/:event_id' => :event
     post '/event/create/:binet_id' => :create_event
+    post '/event/submit/:binet_id/:event_id' => :submit_event
     post '/event/status/:event_id/:new_status' => :change_status
     post '/event/log/:binet_id/:event_id' => :log
     post '/event/comment/:binet_id/:event_id' => :add_comment

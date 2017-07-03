@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170701144605) do
+ActiveRecord::Schema.define(version: 20170703225251) do
 
   create_table "accounts", force: :cascade do |t|
     t.string  "trigramme",    limit: 3
@@ -74,12 +74,12 @@ ActiveRecord::Schema.define(version: 20170701144605) do
   end
 
   create_table "event_transactions", force: :cascade do |t|
-    t.integer  "event_id",   limit: 4,                 null: false
-    t.integer  "account_id", limit: 4,                 null: false
-    t.string   "trigramme",  limit: 3,                 null: false
-    t.string   "first_name", limit: 255,               null: false
-    t.string   "last_name",  limit: 255,               null: false
-    t.decimal  "price",                  precision: 2, null: false
+    t.integer  "event_id",   limit: 4,                            null: false
+    t.integer  "account_id", limit: 4,                            null: false
+    t.string   "trigramme",  limit: 3,                            null: false
+    t.string   "first_name", limit: 255,                          null: false
+    t.string   "last_name",  limit: 255,                          null: false
+    t.decimal  "price",                  precision: 12, scale: 2, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

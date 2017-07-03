@@ -31,6 +31,31 @@ class EventController < ApplicationController
     render_reload
   end
 
+  def submit_event
+    @event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])
+    filepath = "/tmp/#{@event.name} - #{@event.begins_at.strftime('%F %T')}.xlsx"
+    submitter = Account.find_by(frankiz_id: session[:frankiz_id])
+    fail TdbException, 'Tu n\'as pas l\'air connecté' if submitter.nil?
+    fail TdbException, 'L\'évènement n\'est pas terminé' unless @event.finished?
+    workbook = WriteXLSX.new(filepath)
+    worksheet = workbook.add_worksheet
+    worksheet.write(0, 0, 'Trigramme')
+    worksheet.write(0, 1, 'Nom')
+    worksheet.write(0, 2, 'Montant')
+    @event.transactions.order(:updated_at).each_with_index do |transaction, i|
+      account = Account.find_by(id: transaction.account_id)
+      next if account.nil?
+      worksheet.write(i + 1, 0, account.trigramme)
+      worksheet.write(i + 1, 1, account.full_name)
+      worksheet.write(i + 1, 2, transaction.price)
+    end
+    workbook.close
+    EventMailer.submit(@event, @binet, submitter, filepath).deliver_now
+    File.delete filepath
+    @event.update(status: :submitted)
+    render_reload
+  end
+
   def log
     account = Account.find_by(id: params[:account_id])
     event = Event.find_by(id: params[:event_id], binet_id: @binet[:id])

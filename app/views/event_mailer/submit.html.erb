@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>
+      Salut,
+    </p>
+    <p>
+      L'évènement <%= @event.name %> pour le binet <%= @binet[:name] %> vient d'être soumis pour paiement par <%= @submitter.full_name %>, voici le récapitulatif:
+    </p>
+    <ul>
+      <li><%= @transactions.size %> transactions.</li>
+      <li>Valeur totale : <%= number_to_currency(@transactions.map(&:price).sum) %></li>
+    </ul>
+    <p>
+      Le BôB, qui t'enkhûle avec affection.
+    </p>
+  </body>
+</html>
