@@ -106,7 +106,7 @@ $(document).ajaxError(function(e, jqXHR) {
       $('#error-modal #error-modal-text').html(jqXHR.responseJSON['message']);
     }
   } catch(e) {
-    $('#error-modal #error-modal-text').text('Something went wrong, call the SIE.');
+    $('#error-modal #error-modal-text').text('Oups, c\'est tout cassé, on corrige au plus vite.');
   }
   $('#error-modal').modal('show');
 });

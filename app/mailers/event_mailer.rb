@@ -10,7 +10,7 @@ class EventMailer < ActionMailer::Base
     @transactions = event.transactions
     attachments[File.basename(filepath)] = File.read(filepath)
     mail(
-      to: 'bobar@binet.polytechnique.fr',
+      to: 'bobar@binets.polytechnique.fr',
       cc: submitter.mail,
       subject: "L'évènement #{@event.name} a été soumis pour paiement",
     )
