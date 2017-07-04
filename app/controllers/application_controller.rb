@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
     fail 'Délai dépassé' if (timestamp.to_i - Time.current.to_i).abs > 600
     fail 'Session compromise' if Digest::MD5.hexdigest(timestamp + ENV['FKZ_KEY'] + response) != digest
     response = JSON.parse(response)
-    session[:frankiz_id] = response['uid']
+    session[:frankiz_id] = response['uid'].to_i
     session[:binets_admin] = response['binets_admin'].select { |k, _| k == BOB }
     redirect_to '/'
   end
@@ -85,7 +85,8 @@ class ApplicationController < ActionController::Base
   def issue
     client = Octokit::Client.new(access_token: ENV['GITHUB_TOKEN'])
     body = params[:body]
-    body += "\nFrankiz_id: #{session[:frankiz_id]}\n"
+    user = User.find_by(frankiz_id: session[:frankiz_id])
+    body += "\nCreated by #{user.try(:full_name)}, frankiz_id: #{session[:frankiz_id]}\n"
     client.create_issue('bobar/public-tdb', 'New issue', body)
   end
 

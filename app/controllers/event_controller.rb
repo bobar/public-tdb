@@ -99,7 +99,7 @@ class EventController < ApplicationController
       event_id: event.id,
       author_id: session[:frankiz_id],
       comment: params[:comment].strip,
-      read_by: { author_id => Time.current.utc }.to_json,
+      read_by: { session[:frankiz_id] => Time.current.utc }.to_json,
     )
     render_reload
   end
