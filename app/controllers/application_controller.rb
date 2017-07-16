@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
     fail 'Session compromise' if Digest::MD5.hexdigest(timestamp + ENV['FKZ_KEY'] + response) != digest
     response = JSON.parse(response)
     session[:frankiz_id] = response['uid'].to_i
-    session[:binets_admin] = response['binets_admin'].select { |k, _| k == BOB }
+    session[:binets_admin] = (response['binets_admin'] || {}).select { |k, _| k == BOB }
     redirect_to '/'
   end
 
