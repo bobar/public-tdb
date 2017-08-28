@@ -74,6 +74,20 @@ $(document).ready(function() {
     $('#amount').focus();
   }, true);
 
+  $('#account-admin-search').autocomplete({
+    autoFocus: true,
+    source: '/account/search',
+    minLength: 3,
+    focus: function() {
+      return false;
+    },
+    select: function(event, ui) {
+      window.location.href = '/account/' + ui.item.value;
+      $('#account-admin-search').val(ui.item.full_name);
+      return false;
+    }
+  });
+
   $('#account-search').autocomplete({
     autoFocus: true,
     source: '/account/search',

@@ -17,7 +17,12 @@ class ApplicationController < ActionController::Base
 
   def account
     frankiz_id = session[:frankiz_id].to_i
-    @account = Account.where.not(trigramme: nil).find_by(frankiz_id: frankiz_id)
+    @account = if params.key?(:account_id)
+                 return redirect_to '/account' unless session[:admin]
+                 Account.find(params[:account_id].to_i)
+               else
+                 Account.where.not(trigramme: nil).find_by(frankiz_id: frankiz_id)
+               end
     return redirect_to '/unknown' if @account.nil?
     KeenEvent.publish(:account_view, @account.as_json)
     @transactions = Transaction.where('buyer_id = ? OR receiver_id = ?', @account.id, @account.id)
@@ -79,6 +84,7 @@ class ApplicationController < ActionController::Base
     response = JSON.parse(response)
     session[:frankiz_id] = response['uid'].to_i
     session[:binets_admin] = response['binets_admin'] || {}
+    session[:admin] = session[:binets_admin].key?(BOB)
     redirect_to '/'
   end
 
@@ -93,6 +99,7 @@ class ApplicationController < ActionController::Base
   def logout
     session.delete(:frankiz_id)
     session.delete(:binets_admin)
+    session.delete(:admin)
     redirect_to '/'
   end
 
@@ -103,7 +110,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_bob_admin!
-    not_found! unless session[:binets_admin].key?(BOB)
+    not_found! unless session[:admin]
   end
 
   def set_raven_context

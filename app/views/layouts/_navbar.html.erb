@@ -21,7 +21,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <% if session.key?(:binets_admin) && session[:binets_admin].key?(BOB) %>
+        <% if session[:admin] %>
           <li><a href="/events/admin">Administration</a></li>
         <% end %>
         <li class="dropdown">
