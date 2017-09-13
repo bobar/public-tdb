@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-md-5 col-md-push-7 text-center">
     <h2>Bienvenue, <%= @account.full_name %>, sur ton trigramme <%= @account.trigramme %></h2>
-    <p>
+    <!-- <p>
       Ces information sont fausses&nbsp;?
-      <a target="_blank" href="mailto:bobar@binets.polytechnique.fr?<%= URI.encode_www_form(cc: 'bobar.tdb@gmail.com', subject: "Mauvaise association Frankiz - #{@account.trigramme}")%>">Contacte le BôB</a> pour le signaler&nbsp;!</p>
+      <a target="_blank" href="mailto:bobar@binets.polytechnique.fr?<%= URI.encode_www_form(cc: 'bobar.tdb@gmail.com', subject: "Mauvaise association Frankiz - #{@account.trigramme}")%>">Contacte le BôB</a> pour le signaler&nbsp;!</p> -->
     <h3>Ton solde est de <strong class="<%= 'text-danger' if @account.balance < 0 %>"><%= number_to_currency(@account.balance / 100.0) %></strong></h3>
     <% if @account.balance < 0 %>
       <h4>Viens donc nous faire un chèque&nbsp;!</h4>
