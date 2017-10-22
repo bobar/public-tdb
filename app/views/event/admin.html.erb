@@ -33,7 +33,8 @@
               <td style="min-height: 32px">
                 <% Event::STATUS_CHANGE[e.status].each do |new_status, description| %>
                   <div style="float: left;">
-                    <%= bootstrap_form_tag(url: "/event/status/#{e.id}/#{new_status}", method: :post, remote: true, layout: :inline) do |f| %>
+                    <% url = new_status == 'submitted' ? "/event/submit/#{e.binet_id}/#{e.id}" : "/event/status/#{e.id}/#{new_status}" %>
+                    <%= bootstrap_form_tag(url: url, method: :post, remote: true, layout: :inline) do |f| %>
                       <%= f.primary description, class: 'btn btn-xs btn-primary', style: 'margin: 0 3px;' %>
                     <% end %>
                   </div>
