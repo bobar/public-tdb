@@ -21,7 +21,7 @@ class EventMailer < ActionMailer::Base
     @binet = binet
     @submitter = submitter
     mail(
-      to: 'thierry.deo@gmail.com',
+      to: 'bobar@binets.polytechnique.fr',
       cc: submitter.mail,
       subject: "#{submitter.full_name} veut organiser un évènement: #{event.name}",
     )
