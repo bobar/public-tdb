@@ -15,4 +15,15 @@ class EventMailer < ActionMailer::Base
       subject: "L'évènement #{@event.name} a été soumis pour paiement",
     )
   end
+
+  def requested(event, binet, submitter)
+    @event = event
+    @binet = binet
+    @submitter = submitter
+    mail(
+      to: 'thierry.deo@gmail.com',
+      cc: submitter.mail,
+      subject: "#{submitter.full_name} veut organiser un évènement: #{event.name}",
+    )
+  end
 end

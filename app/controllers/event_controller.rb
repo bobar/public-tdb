@@ -22,12 +22,14 @@ class EventController < ApplicationController
     event_name = params[:name].to_s.strip
     begins_at = params[:begins_at]
     ends_at = params[:ends_at]
+    submitter = Account.find_by(frankiz_id: session[:frankiz_id])
     fail TdbException, 'Le nom est obligatoire' if event_name.blank?
     fail TdbException, 'La date de debut est obligatoire' if begins_at.nil?
     fail TdbException, 'La date de fin est obligatoire' if ends_at.nil?
     fail TdbException, 'La date de debut doit être future' if begins_at < Time.current
     fail TdbException, 'La date de fin doit être après la date de début' if ends_at <= begins_at
-    Event.create(binet_id: @binet[:id], name: event_name, begins_at: begins_at, ends_at: ends_at, requester_id: session[:frankiz_id])
+    event = Event.create(binet_id: @binet[:id], name: event_name, begins_at: begins_at, ends_at: ends_at, requester_id: session[:frankiz_id])
+    EventMailer.requested(event, @binet, submitter).deliver_now
     render_reload
   end
 

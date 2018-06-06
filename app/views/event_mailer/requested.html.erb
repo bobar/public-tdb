@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>
+      Salut,
+    </p>
+    <p>
+      <%= @submitter.full_name %> voudrait organiser cet évènement: <%= @event.name %> pour le binet <%= @binet[:name] %>. Consulte la demande <a href="http://tdb.bobar.pro/event/<%= @binet[:id] %>/<%= @event.id %>">ici</a>, et en voici les horaires:
+    </p>
+    <ul>
+      <li>Début: <%= @event.begins_at %></li>
+      <li>Fin: <%= @event.ends_at %></li>
+    </ul>
+    <p>
+      Le BôB, qui t'enkhûle avec affection.
+    </p>
+  </body>
+</html>
