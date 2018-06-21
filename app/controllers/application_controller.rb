@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
                  Account.where.not(trigramme: nil).find_by(frankiz_id: frankiz_id)
                end
     return redirect_to '/unknown' if @account.nil?
-    KeenEvent.publish(:account_view, @account.as_json)
+    KeenEvent.publish(:account_view, @account.as_json) unless params.key?(:account_id)
     @transactions = Transaction.where('buyer_id = ? OR receiver_id = ?', @account.id, @account.id)
       .where('amount != 0').where('date > ?', Time.current - 1.week)
       .includes(:receiver)
