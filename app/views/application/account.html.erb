@@ -1,5 +1,10 @@
 <div class="row">
   <div class="col-md-5 col-md-push-7 text-center">
+    <% if @opened %>
+      <h3 class="alert alert-success">Le BôB est ouvert ! Allez, viens !</h3>
+    <% else %>
+      <h3 class="alert alert-warning">Le BôB est fermé pour l'instant.</h3>
+    <% end %>
     <h2>Bienvenue, <%= @account.full_name %>, sur ton trigramme <%= @account.trigramme %></h2>
     <!-- <p>
       Ces information sont fausses&nbsp;?

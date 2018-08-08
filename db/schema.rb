@@ -103,15 +103,6 @@ ActiveRecord::Schema.define(version: 20170703225251) do
 
   add_index "schema_migrations_public", ["version"], name: "unique_schema_migrations_public", unique: true, using: :btree
 
-  create_table "settings", force: :cascade do |t|
-    t.string   "name",       limit: 255,   null: false
-    t.text     "value",      limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "settings", ["name"], name: "index_settings_on_name", unique: true, using: :btree
-
   create_table "transactions", force: :cascade do |t|
     t.integer  "buyer_id",    limit: 4
     t.integer  "amount",      limit: 4

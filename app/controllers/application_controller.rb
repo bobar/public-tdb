@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :set_raven_context
+  before_action :guess_opened!
 
   rescue_from TdbException do |mes|
     render json: mes.to_h, status: 400
@@ -111,6 +112,12 @@ class ApplicationController < ActionController::Base
 
   def require_bob_admin!
     not_found! unless session[:admin]
+  end
+
+  def guess_opened!
+    transactions = Transaction.where(receiver_id: Account::DEFAULT_BANK_ID).last(10)
+    @opened = transactions &&
+      transactions.map(&:date).min >= Time.current - 30.minutes
   end
 
   def set_raven_context

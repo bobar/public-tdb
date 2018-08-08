@@ -1,7 +1,11 @@
 <div class="row text-center">
   <div class="col-md-12">
     <h1>Consulte ton trigramme</h1>
-
+    <% if @opened %>
+      <h3 class="alert alert-success">Le BôB est ouvert ! Allez, viens !</h3>
+    <% else %>
+      <h3 class="alert alert-warning">Le BôB est fermé pour l'instant.</h3>
+    <% end %>
     <br>
 
     <h3 class="cycle" style="min-height: 2.5em;">
