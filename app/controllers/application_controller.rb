@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :guess_opened!
 
   rescue_from TdbException do |mes|
-    render json: mes.to_h, status: 400
+    render json: mes.to_h, status: :bad_request
   end
 
   def index
@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
   def guess_opened!
     transactions = Transaction.where(receiver_id: Account::DEFAULT_BANK_ID).last(10)
     @opened = transactions &&
-      transactions.map(&:date).min >= Time.current - 30.minutes
+              transactions.map(&:date).min >= Time.current - 30.minutes
   end
 
   def set_raven_context

@@ -28,7 +28,13 @@ class EventController < ApplicationController
     fail TdbException, 'La date de fin est obligatoire' if ends_at.nil?
     fail TdbException, 'La date de debut doit être future' if begins_at < Time.current
     fail TdbException, 'La date de fin doit être après la date de début' if ends_at <= begins_at
-    event = Event.create(binet_id: @binet[:id], name: event_name, begins_at: begins_at, ends_at: ends_at, requester_id: session[:frankiz_id])
+    event = Event.create(
+      binet_id: @binet[:id],
+      name: event_name,
+      begins_at: begins_at,
+      ends_at: ends_at,
+      requester_id: session[:frankiz_id],
+    )
     EventMailer.requested(event, @binet, submitter).deliver_now
     render_reload
   end
@@ -88,8 +94,10 @@ class EventController < ApplicationController
     e = Event.find(params[:event_id])
     status = e.status
     new_status = params[:new_status]
-    fail TdbException, "Le statut ne peux pas être changé de #{Event::STATUSES[status]} à #{Event::STATUSES[new_status]}" unless
-      Event::STATUS_CHANGE[status].key?(new_status)
+    unless Event::STATUS_CHANGE[status].key?(new_status)
+      fail TdbException,
+           "Le statut ne peux pas être changé de #{Event::STATUSES[status]} à #{Event::STATUSES[new_status]}"
+    end
     e.update(status: new_status)
     render_reload
   end
@@ -110,8 +118,12 @@ class EventController < ApplicationController
 
   def load_binet
     return unless params.key?(:binet_id)
-    not_found! unless [params[:binet_id], 'bobar'].any? { |binet| session[:binets_admin].key?(binet) }
-    @binet = { id: params[:binet_id], name: session[:binets_admin][params[:binet_id]] }.with_indifferent_access
+    not_found! unless session[:binets_admin].is_a?(Hash)
+    not_found! unless [params[:binet_id], BOB].any? { |binet| session[:binets_admin].key?(binet) }
+    @binet = {
+      id: params[:binet_id],
+      name: session[:binets_admin][params[:binet_id]],
+    }.with_indifferent_access
   end
 
   def render_reload

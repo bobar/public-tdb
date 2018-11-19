@@ -1,10 +1,25 @@
-inherit_from:
-  - https://raw.githubusercontent.com/bbatsov/rubocop/v0.43.0/config/enabled.yml
-  - https://raw.githubusercontent.com/bbatsov/rubocop/v0.43.0/config/disabled.yml
-  - https://raw.githubusercontent.com/bbatsov/rubocop/v0.43.0/config/default.yml
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+  - 'bin/**/*'
+  - 'vendor/**/*'
+  - 'db/migrate/2017*'
+  DisplayCopNames: true
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  AllowForAlignment: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 Metrics/AbcSize:
   Enabled: false
+
+Metrics/BlockLength:
+  Max: 40
 
 Metrics/BlockNesting:
   Max: 4
@@ -16,7 +31,7 @@ Metrics/ClassLength:
   Max: 500
 
 Metrics/LineLength:
-  Max: 149
+  Max: 130
 
 Metrics/MethodLength:
   Max: 100
@@ -30,17 +45,17 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Enabled: false
 
-Style/Documentation:
+Naming/VariableNumber:
   Enabled: false
 
-Style/ExtraSpacing:
-  AllowForAlignment: true
+Style/Documentation:
+  Enabled: false
 
 Style/FormatString:
   EnforcedStyle: sprintf
 
-Style/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
 
 Style/MutableConstant:
   Enabled: true
@@ -56,6 +71,11 @@ Style/OptionHash:
   Exclude:
   - 'spec/factories/**/*'
 
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: '()'
+    '%w': '()'
+
 Style/Send:
   Enabled: true
 
@@ -65,11 +85,8 @@ Style/SignalException:
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
-
-Style/VariableNumber:
-  Enabled: false
 
 Rails:
   Enabled: true
@@ -80,14 +97,14 @@ Rails/Date:
 Rails/FindEach:
   Enabled: false
 
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
 Rails/OutputSafety:
   Enabled: false
 
 Rails/TimeZone:
   EnforcedStyle: flexible
-
-AllCops:
-  TargetRubyVersion: 2.2
-  Exclude:
-  - 'bin/**/*'
-  - 'vendor/**/*'

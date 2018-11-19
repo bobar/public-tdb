@@ -9,27 +9,22 @@
     -   id: check-added-large-files
         args:
         - --maxkb=3000
--   repo: git://github.com/pricematch/pricematch-pre-commit-hooks
-    sha: 9a41f686d70c32638d43a269a31c8023fd3ee8fe
-    hooks:
-    -   id: do_not_commit
-    -   id: check_rails_env_with_methods
-    -   id: no_commas_in_string_arrays
 -   repo: local
     hooks:
     -   id: rubocop
         language: ruby
         name: rubocop
         additional_dependencies:
-        - rubocop:0.43.0
-        - rubocop-thread_safety:0.3.1
+        - rubocop:0.60.0
+        - rubocop-thread_safety:0.3.4
         entry: rubocop
         files: \.(rb|rake)$
-        exclude: schema.rb
+        exclude: (?x)(
+            schema.rb|
+            db/migrate/2017*)
         args:
         - --require
         - rubocop-thread_safety
-        - --config=config/rubocop/rubocop.yml
     -   id: rails-erb-lint
         language: ruby
         name: rails-erb-lint
