@@ -4,7 +4,7 @@ ruby '2.5.5'
 gem 'rails', '~> 4.2.3'
 
 gem 'bootstrap-datepicker-rails'
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass', '~> 3.4.1'
 gem 'bootstrap_form'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'font-awesome-rails'
